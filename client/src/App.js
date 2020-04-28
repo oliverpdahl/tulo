@@ -1,26 +1,33 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import { fetchPaths } from '../actions/fetchPaths'
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+class App extends Component {
+ 
+  handleOnClick() {
+    this.props.fetchPaths()
+  }
+ 
+  render() {
+    const paths = this.props.paths.map(path => <li key={path.id}>{path.title}</li>);
+ 
+    return(
+      <div>
+        <button onClick={(event) = this.handleOnClick(event)} />
+        {paths}
+      </div>
+    );
+  }
+};
 
-export default App;
+function mapDispatchToProps(dispatch){
+  return { fetchPaths: () => dispatch(fetchPaths()) }
+}
+ 
+function mapStateToProps(state){
+  return {paths: state.paths}
+}
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(App)
